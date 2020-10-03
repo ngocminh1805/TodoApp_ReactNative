@@ -1,10 +1,12 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import Home from './component/Home'
-import Edit from './component/Edit'
-import Add from './component/Add'
+import Home from './component/Home';
+import Edit from './component/Edit';
+import Add from './component/Add';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {store} from './redux/store'
+import { Provider } from 'react-redux';
 
 
 
@@ -17,13 +19,15 @@ export default class App extends React.Component {
 
 
     return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Edit" options={{ title: "Edit To Do Item" }} component={Edit} />
-          <Stack.Screen name="Add" options={{ title: "Add To Do Item" }} component={Add} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store = {store}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Edit" options={{ title: "Edit To Do Item" }} component={Edit} />
+            <Stack.Screen name="Add" options={{ title: "Add To Do Item" }} component={Add} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     );
   }
 }
