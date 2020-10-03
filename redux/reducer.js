@@ -8,6 +8,9 @@ import {
 
 
 const { SHOW_ALL } = VisibilityFilters
+const initState = [{ id: Math.random(), title: 'item 1' },
+{ id: Math.random(), title: 'item 2' },
+{ id: Math.random(), title: 'item 3' }]
 
 function visibilityFilter(state = SHOW_ALL, action) {
     switch (action.type) {
@@ -18,25 +21,23 @@ function visibilityFilter(state = SHOW_ALL, action) {
     }
 }
 
-function todos(state = [], action) {
+function todos(state = initState, action) {
+    console.log('test_reducuer: ', action)
     switch (action.type) {
         case ADD_TODO:
             return [
                 ...state,
-                {
-                    text: action.text,
-                    completed: false
-                }
+                action.data
             ]
         case EDIT_TODO:
-            return state.map((todo, index) => {
-                if (index === action.index) {
-                    return Object.assign({}, todo, {
-                        completed: !todo.completed
-                    })
-                }
-                return todo
-            })
+            const index = action.index;
+
+             return [
+                 ...state.slice(0,index),
+                 action.data,
+                 ...state.slice(index+1)
+             ]
+
         default:
             return state
     }

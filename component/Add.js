@@ -1,25 +1,42 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { addTodo } from '../redux/actions';
 
 
 
-export default class Add extends React.Component {
+class Add extends React.Component {
 
     constructor(props) {
         super(props);
+
+        console.log('test_screen add', this.props)
+        console.log('test add screen', this)
+
+        this.state = { text: 'add screen' };
+
     }
 
+
+
+
+
     render() {
+
+
         return (
             <View style={styles.container}>
                 <View style={{ alignItems: "center" }}><Text style={styles.title}>Input To Do Title</Text></View>
                 <View style={styles.text_input_container}>
                     <TextInput style={styles.title_textinput}
-                        placeholder='Input To Do' />
+                        placeholder='Input To Do'
+                        onChangeText={(text) => this.setState({ text })}
+                    />
                 </View>
+                {/* <ActionButtons onAdd={this.onAdd} onCancel={this.onCancel}/> */}
                 <View style={styles.container_btn}>
 
-                    <TouchableOpacity style={styles.button_container} onPress={() => { alert("Add New Item") }}>
+                    <TouchableOpacity style={styles.button_container} onPress={() => {this.props.addTodo(this.state.text)  ;  this.props.navigation.goBack()}}>
                         <Text style={styles.button_text}>Add</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button_container} onPress={() => this.props.navigation.goBack()}>
@@ -31,6 +48,33 @@ export default class Add extends React.Component {
         );
     }
 }
+
+//
+
+// const onAdd = () => { 
+    
+// }
+
+// const onCancel = () => { }
+
+// const onChangetext = (text) => {
+//     this.setState({text});
+// }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        // dispatching plain actions
+        addTodo: (name) => dispatch(addTodo(name)),
+        // addTodo: () =>  dispatch({ type: 'INCREMENT' })
+    }
+}
+const mapStateToProps = (state, ownProps) => ({
+    todos: state.todos
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Add)
+
+
 
 // Css
 const styles = StyleSheet.create({

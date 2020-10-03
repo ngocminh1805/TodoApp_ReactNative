@@ -11,14 +11,23 @@ export const VisibilityFilters = {
 
 
 export function setVisibilityFilter(filter) {
+   
     return { type: SET_VISIBILITY_FILTER, filter }
 }
 
 
 export function addTodo(text) {
-    return { type: ADD_TODO, text }
+    console.log('test_addTodo')
+    return { type: ADD_TODO, data:{
+        id: Date.now(),
+        title : text
+    } }
 }
 
-export function editTodo(index) {
-    return { type: EDIT_TODO, index }
+export function editTodo(index,text) {
+    return { type: EDIT_TODO,index: index, 
+        data:{
+        id: Date.now(),
+        title : text
+    }}
 }
