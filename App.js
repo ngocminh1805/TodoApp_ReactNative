@@ -1,33 +1,40 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import Home from './component/Home';
-import Edit from './component/Edit';
-import Add from './component/Add';
+import { Image } from 'react-native'
+import NewScreen from './component/NewScreen'
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import {store} from './redux/store'
-import { Provider } from 'react-redux';
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import TodoScreen from './component/TodoScreen'
 
 
 export default class App extends React.Component {
 
 
   render() {
-
-    const Stack = createStackNavigator();
-
-
+    const Tab = createBottomTabNavigator();
     return (
-      <Provider store = {store}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Edit" options={{ title: "Edit To Do Item" }} component={Edit} />
-            <Stack.Screen name="Add" options={{ title: "Add To Do Item" }} component={Add} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
+      <NavigationContainer>
+        <Tab.Navigator tabBarOptions={{ labelStyle: { fontSize: 15, fontWeight: 'bold', color: '#000' } }} >
+          <Tab.Screen name="Todo"
+            component={TodoScreen}
+            options={{
+              tabBarIcon: () => (
+                <Image source={require('./assets/to-do-list.png')}
+                  resizeMode='contain'
+                  style={{ width: 20, height: 20 }} />
+              )
+            }}
+          />
+          <Tab.Screen name="New" component={NewScreen}
+            options={{
+              tabBarIcon: () => (
+                <Image source={require('./assets/new.png')}
+                  resizeMode='contain'
+                  style={{ width: 20, height: 20 }} />
+              )
+            }} />
+        </Tab.Navigator>
+      </NavigationContainer>
     );
   }
 }

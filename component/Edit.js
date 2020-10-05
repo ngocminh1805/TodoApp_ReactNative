@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import {editTodo} from '../redux/actions'
 import {connect} from 'react-redux'
@@ -11,10 +11,26 @@ class Edit extends React.Component {
         this.state = {text:""}
     }
 
+    // edit press
+
+    onEdit = () =>{
+        const {index} = this.props.route.params;
+        const {id} = this.props.todos[index]; 
+        this.props.editTodo(index,{id:id,title:this.state.text}) 
+         this.props.navigation.goBack()
+    }
+
+    //caancel press
+
+    onCancel = () =>{
+        this.props.navigation.goBack()
+    }
+
 
     render() {
         
-        const {index} = this.props.route.params
+        const {index} = this.props.route.params;
+        const {id} = this.props.todos[index]; 
         return (
             <View style={styles.container}>
                 <View style={{ alignItems: "center" }}><Text style={styles.title}>Edit to do title</Text></View>
@@ -25,10 +41,10 @@ class Edit extends React.Component {
                 </View>
                 <View style={styles.container_btn}>
 
-                    <TouchableOpacity style={styles.button_container} onPress={() => { this.props.editTodo(index,this.state.text) ; this.props.navigation.goBack()}}>
+                    <TouchableOpacity style={styles.button_container} onPress={() => {this.onEdit() }}>
                         <Text style={styles.button_text}> Save </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button_container} onPress={() => this.props.navigation.goBack()}>
+                    <TouchableOpacity style={styles.button_container} onPress={() => this.onCancel() }>
                         <Text style={styles.button_text}> Cancel </Text>
                     </TouchableOpacity>
                 </View>
@@ -40,7 +56,7 @@ class Edit extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        editTodo: (index,text) => dispatch(editTodo(index,text)),
+        editTodo: (index,data) => dispatch(editTodo(index,data)),
     }
 }
 const mapStateToProps = (state, ownProps) => ({

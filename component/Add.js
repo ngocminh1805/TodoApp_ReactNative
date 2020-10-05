@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { addTodo } from '../redux/actions';
+import ActionButtons from './ActionButton'
 
 
 
@@ -12,15 +13,20 @@ class Add extends React.Component {
 
         console.log('test_screen add', this.props)
         console.log('test add screen', this)
-
-        this.state = { text: 'add screen' };
-
+        this.state = { text: '' };
     }
 
+    // add press
+    addPress = ()=>{
+        this.props.addTodo(this.state.text) 
+        this.props.navigation.goBack()
+    }
+    // cancel press
+    cancelPress = ()=>{
+        this.props.navigation.goBack()
+    }
 
-
-
-
+    // render Screen Add
     render() {
 
 
@@ -33,33 +39,14 @@ class Add extends React.Component {
                         onChangeText={(text) => this.setState({ text })}
                     />
                 </View>
-                {/* <ActionButtons onAdd={this.onAdd} onCancel={this.onCancel}/> */}
-                <View style={styles.container_btn}>
-
-                    <TouchableOpacity style={styles.button_container} onPress={() => {this.props.addTodo(this.state.text)  ;  this.props.navigation.goBack()}}>
-                        <Text style={styles.button_text}>Add</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button_container} onPress={() => this.props.navigation.goBack()}>
-                        <Text style={styles.button_text}>Cancel</Text>
-                    </TouchableOpacity>
-                </View>
-
+                <ActionButtons onAdd={this.addPress} onCancel={this.cancelPress}/>
+               
             </View>
         );
     }
 }
 
-//
 
-// const onAdd = () => { 
-    
-// }
-
-// const onCancel = () => { }
-
-// const onChangetext = (text) => {
-//     this.setState({text});
-// }
 
 const mapDispatchToProps = dispatch => {
     return {

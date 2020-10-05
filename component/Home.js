@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import todoItem from './todoItem'
 
 class Home extends React.Component {
 
@@ -10,79 +11,83 @@ class Home extends React.Component {
 
   }
 
+  // render todoitem 
+  renderItemn = (item) => {
+    const data = this.props.todos;
+    console.log('item render', item);
+    return (
+      <View style={items.container}>
+        <Text style={items.todoTitle}>
+          {item.title}
+        </Text>
 
+        <TouchableOpacity onPress={() => this.onDeletePress(item)}>
+          <Image source={require('../assets/delete.png')} style={items.delete_btn} />
+        </TouchableOpacity>
 
+        <TouchableOpacity onPress={() => this.onEditPress(item)}>
+          <Image source={require('../assets/edit.png')} style={items.edit_btn} />
+        </TouchableOpacity>
+      </View>)
+  }
+
+  // press Add
+  onAddPress = () => {
+    const data = this.props.todos;
+    this.props.navigation.navigate('Add');
+  }
+  // press Edit
+  onEditPress = (item) => {
+    const data = this.props.todos;
+    this.props.navigation.navigate('Edit', { index: data.indexOf(item) });
+  }
+
+  //press Delete
+  onDeletePress = (item) => {
+    const data = this.props.todos;
+    Alert.alert(
+      'Remove ToDo',
+      'Do you want remove ' + item.title,
+      [
+        { text: 'yes', onPress: () => { const index = data.indexOf(item); this.setState(data.splice(index, 1)) } },
+        { text: 'no', style: 'cancel' }
+      ],
+      {
+        cancelable: true
+      }
+    )
+  }
+
+  // render Screen Home
   render() {
 
+    const data = this.props.todos;
     console.log('test home screen');
-
-    const onAddPress = () => {
-      this.props.navigation.navigate('Add');
-    }
-
-    const onEditPress = (item) => {
-      this.props.navigation.navigate('Edit',{index: data.indexOf(item)});
-    }
-
     console.log('test_render:', this.props.todos)
 
-    const data = this.props.todos;
+
     return (
 
       <View style={styles.container}>
-        <View>
-          <Text style={styles.title}> ToDoList </Text>
-        </View >
         <ScrollView style={styles.scrollcontainer}>
           <FlatList
             data={data}
             keyExtractor={(item) => item.id.toString()}
             style={styles.flatlist}
-
-            renderItem={({ item }) => {
-              return (
-                <View style={items.container}>
-                  <Text style={items.todoTitle}>
-                    {item.title}
-                  </Text>
-
-                  <TouchableOpacity onPress={() => {
-                    Alert.alert(
-                      'Remove ToDo',
-                      'Do you want remove ' + item.title,
-                      [
-                        { text: 'yes', onPress: () => { const index = data.indexOf(item); this.setState(data.splice(index, 1)) } },
-                        { text: 'no', style: 'cancel' }
-                      ],
-                      {
-                        cancelable: true
-                      }
-                    )
-                  }}>
-                    <Image source={require('../assets/delete.png')} style={items.delete_btn} />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => { onEditPress(item) }}>
-                    <Image source={require('../assets/edit.png')} style={items.edit_btn} />
-                  </TouchableOpacity>
-                </View>)
-            }}>
+            renderItem={({ item }) => this.renderItemn(item)}>
           </FlatList>
         </ScrollView>
 
-        <TouchableOpacity style={styles.add_btn} onPress={() => { onAddPress() }}>
+        <TouchableOpacity style={styles.add_btn} onPress={() => this.onAddPress()}>
           <Text style={styles.add_btn_text} > + </Text>
         </TouchableOpacity>
 
       </View>
 
-
     );
   }
 }
 
-
-const renderItemn = () => { }
 
 const mapStateToProps = (state, ownProps) => ({
   todos: state.todos
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
   scrollcontainer: {
     flex: 1,
     padding: 16,
-    marginBottom: 5,
+    marginBottom: 0,
     borderColor: '#000',
     borderRadius: 20,
     borderWidth: 4,
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 11,
     right: 20,
-    bottom: 90,
+    bottom: 40,
     width: 60,
     height: 60,
     borderRadius: 50,
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
   },
 
   flatlist: {
-    marginBottom: 10
+    marginBottom: 0
   }
 
 
