@@ -28,7 +28,7 @@ export default class App extends React.Component {
           <Tab.Screen name="New" component={NewScreen}
             options={{
               tabBarIcon: () => (
-                <Image source={require('./assets/new.png')}
+                <Image source={require('./assets/news.png')}
                   resizeMode='contain'
                   style={{ width: 20, height: 20 }} />
               )

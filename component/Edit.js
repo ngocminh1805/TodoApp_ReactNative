@@ -1,50 +1,50 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import {editTodo} from '../redux/actions'
-import {connect} from 'react-redux'
+import { editTodo } from '../redux/actions'
+import { connect } from 'react-redux'
 
 class Edit extends React.Component {
     constructor(props) {
         super(props);
 
-        console.log('test screen edit ',this.props);
-        this.state = {text:""}
+        console.log('test screen edit ', this.props);
+        this.state = { text: "" }
     }
 
     // edit press
 
-    onEdit = () =>{
-        const {index} = this.props.route.params;
-        const {id} = this.props.todos[index]; 
-        this.props.editTodo(index,{id:id,title:this.state.text}) 
-         this.props.navigation.goBack()
+    onEdit = () => {
+        const { index } = this.props.route.params;
+        const { id } = this.props.todos[index];
+        this.props.editTodo(index, { id: id, title: this.state.text })
+        this.props.navigation.goBack()
     }
 
     //caancel press
 
-    onCancel = () =>{
+    onCancel = () => {
         this.props.navigation.goBack()
     }
 
 
     render() {
-        
-        const {index} = this.props.route.params;
-        const {id} = this.props.todos[index]; 
+
+        const { index } = this.props.route.params;
+        const { id } = this.props.todos[index];
         return (
             <View style={styles.container}>
                 <View style={{ alignItems: "center" }}><Text style={styles.title}>Edit to do title</Text></View>
                 <View style={styles.text_input_container}>
-                    <TextInput style={styles.title_textinput} 
-                    placeholder = {this.props.todos[index].title}
-                    onChangeText = {(text) => this.setState({text})  } />
+                    <TextInput style={styles.title_textinput}
+                        placeholder={this.props.todos[index].title}
+                        onChangeText={(text) => this.setState({ text })} />
                 </View>
                 <View style={styles.container_btn}>
 
-                    <TouchableOpacity style={styles.button_container} onPress={() => {this.onEdit() }}>
+                    <TouchableOpacity style={styles.button_container} onPress={() => { this.onEdit() }}>
                         <Text style={styles.button_text}> Save </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button_container} onPress={() => this.onCancel() }>
+                    <TouchableOpacity style={styles.button_container} onPress={() => this.onCancel()}>
                         <Text style={styles.button_text}> Cancel </Text>
                     </TouchableOpacity>
                 </View>
@@ -56,14 +56,14 @@ class Edit extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        editTodo: (index,data) => dispatch(editTodo(index,data)),
+        editTodo: (index, data) => dispatch(editTodo(index, data)),
     }
 }
 const mapStateToProps = (state, ownProps) => ({
     todos: state.todos
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(Edit)
+export default connect(mapStateToProps, mapDispatchToProps)(Edit)
 
 
 const styles = StyleSheet.create({
