@@ -27,7 +27,13 @@ const storeData = async (value) => {
 
 // State khởi tạo
 
-const initState = [];
+const initState = [
+  {id: Math.random(),title: 'Todo 1'},
+  {id: Math.random(),title: 'Todo 2'},
+  {id: Math.random(),title: 'Todo 3'},
+  {id: Math.random(),title: 'Todo 4'},
+  {id: Math.random(),title: 'Todo 5'},
+];
 
 // hàm reducer chỉ định State thay đổi khi  nhận vào các action
 
